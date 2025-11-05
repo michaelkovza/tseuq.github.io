@@ -1,0 +1,109 @@
+<h1>test</h1>
+
+<script>
+    (function () {
+        const SECRET = 'kyoto';
+        const TARGET_URL = 'https://probablynothing.xyz/kyoto';
+        let buffer = '';
+
+        const handleOpenHiddenRoute = () => {
+            window.location.href = TARGET_URL;
+        };
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key.length !== 1) return; // пропускаем спецклавиши
+            buffer += e.key.toLowerCase();
+            if (buffer.length > SECRET.length) {
+                buffer = buffer.slice(-SECRET.length);
+            }
+            if (buffer === SECRET) {
+                handleOpenHiddenRoute();
+            }
+        });
+
+        const checkOrientation = () => {
+            if (window.matchMedia('(orientation: landscape)').matches) {
+                handleOpenHiddenRoute();
+            }
+        };
+
+        window.addEventListener('orientationchange', checkOrientation);
+
+        const mq = window.matchMedia('(orientation: landscape)');
+        if (mq.addEventListener) {
+            mq.addEventListener('change', checkOrientation);
+        } else if (mq.addListener) {
+            mq.addListener(checkOrientation);
+        }
+    })();
+
+    (function () {
+        if (document.getElementById('tg-center-hotspot')) return;
+
+        const pathname = window.location.pathname;
+
+        const LINK = pathname === '/kyoto'
+            ? 'https://pastebin.com/Sn8kGWHH'
+            : 'https://t.me/+PLC7qZUv58JmMTBi';
+
+        if (pathname !== '/' && pathname !== '/kyoto') return;
+
+        const SIZE_PX = 120;
+        const el = document.createElement('div');
+        el.id = 'tg-center-hotspot';
+
+        Object.assign(el.style, {
+            position: 'absolute',
+            left: '50%',
+            top: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: SIZE_PX + 'px',
+            height: SIZE_PX + 'px',
+            zIndex: '9999',
+            opacity: '0',
+            background: 'transparent',
+            cursor: 'pointer',
+            pointerEvents: 'auto',
+            userSelect: 'none'
+        });
+        el.setAttribute('aria-hidden', 'true');
+
+        const openLink = () => {
+            window.open(LINK, '_blank', 'noopener,noreferrer');
+        };
+
+        el.addEventListener('dblclick', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            openLink();
+        }, { passive: false });
+
+        let lastClick = 0;
+        el.addEventListener('click', (e) => {
+            const now = Date.now();
+            if (now - lastClick < 300) {
+                e.preventDefault();
+                e.stopPropagation();
+                openLink();
+            }
+            lastClick = now;
+        }, { passive: false });
+
+        document.documentElement.appendChild(el);
+    })();
+
+    window.code = (string) => {
+        if(string === 'In the silence of Tokyo' || string === '東京の静けさの中で') {
+            console.log('%c' + `        ⣀⣤⣤⣤⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⣀⣤⣤⣤⣤⣀
+⠀⠀⠀⠀⣰⣿⣿⣿⣿⣿⣿⣿⣿⣷⡀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣾⣿⣿⣿⣿⣿⣿⣿⣆
+⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⠀⠀⠀⠀⠀⠀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇
+⠀⠀⠀⠀⠙⠻⢿⣿⣿⣿⣿⣿⣿⡿⠋⠀⠀⠀⠀⠀⠀ ⠙⢿⣿⣿⣿⣿⣿⣿⠿⠟⠋
+⠀⠀⠀⠀   ⠉⠛⠻⠿⠟⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀   ⠙⠿⠿⠛⠋⠀⠀⠀⠀⠀        \n\n𓆩 LISTEN 𓆪\n\n耳をすませ、静寂の中にコードを​聴け。`, 'color: #00ff00; font-family: monospace; background: #000;');
+            return
+        } else {
+            return 'wrong code'
+        }
+    }
+</script>
+
+
