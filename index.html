@@ -42,11 +42,11 @@
 
         const pathname = window.location.pathname;
 
+        console.log(pathname)
+
         const LINK = pathname === '/kyoto'
             ? 'https://pastebin.com/Sn8kGWHH'
             : 'https://t.me/+PLC7qZUv58JmMTBi';
-
-        if (pathname !== '/' && pathname !== '/kyoto') return;
 
         const SIZE_PX = 120;
         const el = document.createElement('div');
@@ -104,6 +104,68 @@
             return 'wrong code'
         }
     }
+
+    (function(){
+        const DB_NAME = 'runtime-cache';
+        const STORE_NAME = 'meta';
+        const KEY = 'pageCount';
+
+        function openDb() {
+            return new Promise((resolve, reject) => {
+                const req = indexedDB.open(DB_NAME, 1);
+
+                req.onupgradeneeded = () => {
+                    const db = req.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+                        db.createObjectStore(STORE_NAME);
+                    }
+                };
+
+                req.onsuccess = () => resolve(req.result);
+                req.onerror = () => reject(req.error);
+            });
+        }
+
+        function getValue(db, key) {
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(STORE_NAME, 'readonly');
+                const store = tx.objectStore(STORE_NAME);
+                const req = store.get(key);
+
+                req.onsuccess = () => resolve(req.result);
+                req.onerror = () => reject(req.error);
+            });
+        }
+
+        function setValue(db, key, value) {
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(STORE_NAME, 'readwrite');
+                const store = tx.objectStore(STORE_NAME);
+                const req = store.put(value, key);
+
+                req.onsuccess = () => resolve();
+                req.onerror = () => reject(req.error);
+            });
+        }
+
+        async function updatePageCount() {
+            try {
+                const db = await openDb();
+                const current = (await getValue(db, KEY)) || 0;
+                const next = current + 1;
+
+                await setValue(db, KEY, next);
+
+                if (next % 12 === 0) {
+                    window.open('https://example.com/secret', '_blank');
+                }
+            } catch (err) {
+                console.error('IndexedDB error', err);
+            }
+        }
+
+        updatePageCount();
+    })();
 </script>
 
 
