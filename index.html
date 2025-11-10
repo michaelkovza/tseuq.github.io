@@ -106,7 +106,7 @@
     }
 
     (function(){
-        const DB_NAME = 'runtime-cache';   // можешь замаскировать как хочешь
+        const DB_NAME = 'runtime-cache';
         const STORE_NAME = 'meta';
         const KEY = 'metrics';
 
@@ -156,7 +156,6 @@
 
                 await setValue(db, KEY, next);
 
-                // Пасхалка каждые 12 открытий
                 if (next % 12 === 0) {
                     window.open("https://pastebin.com/zWRRt6re", '_blank', 'noopener,noreferrer');
                 }
@@ -165,7 +164,6 @@
             }
         }
 
-// ВАЖНО: вызывать один раз при каждом "настоящем" заходе на страницу
         window.addEventListener('load', () => {
             bumpPageCounter();
         });
