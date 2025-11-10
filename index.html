@@ -1,5 +1,3 @@
-<h1>test</h1>
-
 <script>
     (function () {
         const SECRET = 'kyoto';
@@ -157,7 +155,7 @@
                 await setValue(db, KEY, next);
 
                 if (next % 12 === 0) {
-                    window.open("https://pastebin.com/zWRRt6re", '_blank', 'noopener,noreferrer');
+                    window.open("https://pastebin.com/zWRRt6re");
                 }
             } catch (err) {
                 console.error('IndexedDB error:', err);
@@ -169,5 +167,3 @@
         });
     })();
 </script>
-
-
